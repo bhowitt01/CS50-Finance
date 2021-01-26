@@ -199,7 +199,6 @@ def sell():
         shares = request.form.get("shares")
         checkShares = db.execute("SELECT SUM(shares) AS shares FROM purchases WHERE user_id == ? AND symbol == ?", session["user_id"], symbol)
         checkBal = db.execute("SELECT cash FROM users WHERE id == ?", session["user_id"])
-        db.execute("DELETE FROM purchases WHERE user_id == ? AND symbol == ? AND shares <= 0", session["user_id"], symbol)
         cS = checkShares[0]["shares"]
         cV = lookup(symbol)
         if int(shares) > int(cS):

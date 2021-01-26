@@ -17,11 +17,11 @@
         <tfoot>
             <tr>
                 <td colspan="3" style="text-align: left">User Balance</td>
-                <td><b>${{ cash }}</b></td>
+                <td><b>{{ "$%.2f" | format(cash) }}</b></td>
             </tr>
             <tr>
                 <td colspan="3" style="text-align: left">Projected Account Total</td>
-                <td><b>${{ total_value }}</b></td>
+                <td><b>{{ "$%.2f" | format(total_value) }}</b></td>
             </tr>
         </tfoot>
         <tbody>
@@ -29,7 +29,7 @@
                <tr>
                    <td>{{ row["symbol"] }}</td>
                    <td>{{ row["shares"] }}</td>
-                   <td>${{ row["price"] }}</td>
+                   <td>{{ "$%.2f" | format(row["price"]) }}</td>
                    <td>{{ "$%.2f" | format((row["price"] | float) * (row["shares"] | float)) }} </td>
                </tr>
             {% endfor %}
