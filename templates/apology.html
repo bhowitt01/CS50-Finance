@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <audio autoplay>
+        <source src="https://www.ringtonex.com/mp3/2020/among-us-trap.mp3?_=1" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <img alt="{{ top }}" class="border" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://i.kym-cdn.com/photos/images/newsfeed/001/966/661/fb8" title="{{ top }}">
+{% endblock %}
