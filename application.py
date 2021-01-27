@@ -191,7 +191,7 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    options = db.execute("SELECT symbol FROM purchases WHERE user_id == ? AND sold == 0", session["user_id"])
+    options = db.execute("SELECT symbol FROM purchases WHERE user_id == ? GROUP BY symbol HAVING SUM(shares) > 0", session["user_id"])
 
     if request.method == "POST":
         sold = True
