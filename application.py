@@ -91,8 +91,9 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-    """Show history of transactions"""
-    return apology("TODO")
+    rows = db.execute("SELECT symbol, price, shares, time, sold FROM purchases WHERE user_id == ?", session["user_id"])
+    sold = list()
+    return render_template("history.html", rows = rows)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -163,29 +164,29 @@ def register():
     if request.method == "POST":
 
         if not request.form.get("username"):
-            return apology("you must enter a username", 403)
+            return apology("you must enter a username", 400)
         elif not request.form.get("password"):
-            return apology("you must enter a password", 403)
+            return apology("you must enter a password", 400)
 
         username = request.form.get("username")
         passHash = generate_password_hash(request.form.get("password"))
         userCheck = db.execute("SELECT username FROM users WHERE username == ?", username)
 
         if len(username) == 0:
-            return apology("you must enter a username", 403)
+            return apology("you must enter a username", 400)
 
         if len(userCheck) != 0:
-            return apology("this username is already taken", 403)
+            return apology("this username is already taken", 400)
 
-        if check_password_hash(passHash, request.form.get("confirm_password")):
+        if check_password_hash(passHash, request.form.get("confirmation")):
             db.execute("INSERT INTO users (username, hash) VALUES(?,?)", username, passHash)
             return redirect("/")
         else:
-            return apology("passwords do not match", 403)
+            return apology("passwords do not match", 400)
     else:
         return render_template("register.html")
 
-    return apology("invalid username/password", 403)
+    return apology("invalid username/password", 400)
 
 
 @app.route("/sell", methods=["GET", "POST"])
