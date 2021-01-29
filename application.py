@@ -198,7 +198,7 @@ def sell():
         sold = True
         symbol = request.form.get("symbol")
         shares = request.form.get("shares")
-        if not symbol
+        if not symbol:
             return apology("symbol not given", 403)
         if not shares:
             return apology("shares not given", 403)
