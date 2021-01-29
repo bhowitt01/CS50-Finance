@@ -198,6 +198,10 @@ def sell():
         sold = True
         symbol = request.form.get("symbol")
         shares = request.form.get("shares")
+        if not symbol
+            return apology("symbol not given", 403)
+        if not shares:
+            return apology("shares not given", 403)
         checkShares = db.execute("SELECT SUM(shares) AS shares FROM purchases WHERE user_id == ? AND symbol == ?", session["user_id"], symbol)
         checkBal = db.execute("SELECT cash FROM users WHERE id == ?", session["user_id"])
         cS = checkShares[0]["shares"]
