@@ -87,7 +87,7 @@ def buy():
         date_time = date_time.strftime("%Y-%m-%d %H:%M:%S")
         db.execute("UPDATE users SET cash = ? WHERE id = ?", userBalance, session["user_id"])
         db.execute("INSERT INTO purchases (user_id, symbol, price, time, shares, sold) VALUES(?,?,?,?,?,?)", session["user_id"], quoted["symbol"], num, date_time, shares, sold)
-        return render_template("bought.html", shares=shares, name=quoted["name"], symbol=quoted["symbol"], price=price)
+        return render_template("bought.html", shares=shares, name=quoted["name"], symbol=quoted["symbol"], price='${:,.2f}'.format(price))
     else:
         return render_template("buy.html")
     return apology("not working",500)
@@ -156,7 +156,7 @@ def quote():
         quoted = lookup(symbol)
         if not quoted:
             return apology("invalid symbol", 400)
-        return render_template("quoted.html",name=quoted["name"], symbol=quoted["symbol"], price=quoted["price"])
+        return render_template("quoted.html",name=quoted["name"], symbol=quoted["symbol"], price='${:,.2f}'.format(quoted["price"]))
     else:
         return render_template("quote.html")
 
