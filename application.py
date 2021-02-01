@@ -51,7 +51,7 @@ if not os.environ.get("API_KEY"):
 def index():
     rows = db.execute("SELECT symbol, price, SUM(shares) AS shares FROM purchases JOIN users ON id == user_id WHERE user_id == ? GROUP BY symbol HAVING SUM(shares) > 0", session["user_id"])
     if not rows:
-        return apology("No previous purchases.", 403)
+        return apology("No previous purchases.", 200)
     bal = db.execute("SELECT cash FROM users WHERE id == ?", session["user_id"])
     for row in rows:
         quoted = lookup(row["symbol"])
@@ -66,17 +66,22 @@ def buy():
     if request.method == "POST":
         sold = False
         symbol = request.form.get("symbol").upper()
-        shares = request.form.get("shares")
+        try:
+            shares = int(request.form.get("shares"))
+        except ValueError:
+            return apology("invalid shares", 400)
+        if shares < 0:
+            return apology("invalid shares", 400)
         quoted = lookup(symbol)
         if not quoted:
-            return apology("invalid symbol",403)
-            return apology("must buy a minimum of one share",403)
+            return apology("invalid symbol",400)
+            return apology("must buy a minimum of one share",400)
         userBalance = db.execute("SELECT cash FROM users WHERE id == ?", session["user_id"])
         cash = float(userBalance[0]["cash"])
-        num = quoted["price"]
+        num = float(quoted["price"])
         price = float(quoted["price"]) * float(shares)
         if cash < price:
-            return apology("insufficient balance",403)
+            return apology("insufficient balance",400)
         userBalance = cash - price
         date_time = datetime.datetime.now()
         date_time = date_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -150,7 +155,7 @@ def quote():
         symbol = request.form.get("symbol")
         quoted = lookup(symbol)
         if not quoted:
-            return apology("invalid symbol", 403)
+            return apology("invalid symbol", 400)
         return render_template("quoted.html",name=quoted["name"], symbol=quoted["symbol"], price=quoted["price"])
     else:
         return render_template("quote.html")
