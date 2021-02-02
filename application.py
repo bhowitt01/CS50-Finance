@@ -203,18 +203,24 @@ def sell():
         sold = True
         symbol = request.form.get("symbol")
         shares = request.form.get("shares")
+        try:
+            shares = int(shares)
+        except:
+            return apology("invalid shares", 400)
         if not symbol:
-            return apology("symbol not given", 403)
+            return apology("symbol not given", 400)
         if not shares:
-            return apology("shares not given", 403)
+            return apology("shares not given", 400)
         checkShares = db.execute("SELECT SUM(shares) AS shares FROM purchases WHERE user_id == ? AND symbol == ?", session["user_id"], symbol)
         checkBal = db.execute("SELECT cash FROM users WHERE id == ?", session["user_id"])
         cS = checkShares[0]["shares"]
         cV = lookup(symbol)
-        if int(shares) > int(cS):
-            return apology("shares provided are greater than shares owned", 403)
+        if shares > int(cS):
+            return apology("shares provided are greater than shares owned", 400)
+        if shares < 0:
+            return apology("shares must be a positive integer", 400)
         if not lookup(symbol):
-            return apology("invalid symbol", 403)
+            return apology("invalid symbol", 400)
         newShare = int(cS) - int(shares)
         fltBal = float(checkBal[0] ["cash"])
         fltcV = float(cV["price"]) * float(shares)

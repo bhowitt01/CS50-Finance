@@ -29,8 +29,8 @@
                            {{ "Sale" }}
                         {% endif %}
                    </td>
-                   <td>{{ "$%.2f" | format(row["price"]) }}</td>
-                   <td>{{ "$%.2f" | format((row["price"] | float) * (0 - row["shares"] | float)) }} </td>
+                   <td>{{ "$%,.2f" | format(row["price"]) }}</td>
+                   <td>{{ "$%,.2f" | format((row["price"] | float) * (0 - row["shares"] | float)) }} </td>
                    <td> {{ row["time"] }}</td>
                </tr>
             {% endfor %}
