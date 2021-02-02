@@ -87,7 +87,7 @@ def buy():
         date_time = date_time.strftime("%Y-%m-%d %H:%M:%S")
         db.execute("UPDATE users SET cash = ? WHERE id = ?", userBalance, session["user_id"])
         db.execute("INSERT INTO purchases (user_id, symbol, price, time, shares, sold) VALUES(?,?,?,?,?,?)", session["user_id"], quoted["symbol"], num, date_time, shares, sold)
-        return render_template("bought.html", shares=shares, name=quoted["name"], symbol=quoted["symbol"], price='${:,.2f}'.format(price))
+        return render_template("bought.html", shares=shares, name=quoted["name"], symbol=quoted["symbol"], price=price)
     else:
         return render_template("buy.html")
     return apology("not working",500)

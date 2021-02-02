@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block main %}
-    <p> You have sold {{ shares }} share(s) of {{ symbol }} for ${{ fltcV }}!</p>
+    <p> You have sold {{ shares }} share(s) of {{ symbol }} for {{ fltcV | usd }}!</p>
 {% endblock %}
