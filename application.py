@@ -225,12 +225,12 @@ def sell():
         fltBal = float(checkBal[0] ["cash"])
         fltcV = float(cV["price"]) * float(shares)
         newBal = fltBal + fltcV
-        shares = 0 - int(shares)
+        shares = 0 - shares
         date_time = datetime.datetime.now()
         date_time = date_time.strftime("%Y-%m-%d %H:%M:%S")
         db.execute("INSERT INTO purchases (user_id, symbol, price, time, shares, sold) VALUES(?,?,?,?,?,?)", session["user_id"], symbol, cV["price"], date_time, shares, sold)
         db.execute("UPDATE users SET cash = ? WHERE id == ?", newBal, session["user_id"])
-        shares = 0 - int(shares)
+        shares = 0 - shares
         return render_template("sold.html", shares=shares, symbol=symbol, fltcV=fltcV)
     else:
         return render_template("sell.html", options=options)
